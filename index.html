@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Data Manager</h1>
+            <p>Upravljanje zapisima pomoću JavaScripta i Firebasea</p>
+        </div>
+    </header>
+    <main class="container">
+        <section class="form-section">
+            <h2>Novi zapis</h2>
+            <form id="recordForm">
+                <div class="form-group">
+                    <label>
+                        Naziv
+                    </label>
+                    <input type="text" id="title" placeholder="Unesite naziv" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        Kategorija
+                    </label>
+                    <select id="category">
+                        <option value="Ostalo">Ostalo</option>
+                        <option value="Proizvod">Proizvod</option>
+                        <option value="Usluga">Usluga</option>
+                        <option value="Projekt">Projekt</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>
+                        Datum
+                    </label>
+                    <input type="date" id="date" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        Status
+                    </label>
+                    <select id="status">
+                        <option value="Aktivan">Aktivan</option>
+                        <option value="Neaktivan">Neaktivan</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>
+                        Opis
+                    </label>
+                    <textarea id="description" rows="5" cols="50" placeholder="Opis zapisa"></textarea>
+                </div>
+                <button class="btn-primary">Spremi zapis </button>
+            </form>
+        </section>
+        <section class="toolbar">
+            <input type="search" id="search" placeholder="Pretraži zapise...">
+            <select id="filter">
+                <option value="Sve">Sve kategorije</option>
+                <option value="Proizvod">Proizvod</option>
+                <option value="Usluga">Usluga</option>
+                <option value="Projekt">Projekt</option>
+            </select>
+        </section>
+        <section>
+            <h2>Zapisi</h2>
+            <section id="records" class="records-grid">
+                <!-- Dinamički sadržaj-->
+
+            </section>
+        </section>
+    </main>
+    <footer>
+        &copy; 2026 Data Manager
+    </footer>
+</body>
+
+</html>
