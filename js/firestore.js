@@ -12,3 +12,19 @@ async function addRecord(record, collectionName) {
     console.error(error);
   }
 }
+
+//Dohvaćanje zapisa
+async function getRecords() {
+  const snapshot = await db.collection("records").get();
+
+  let records = [];
+
+  snapshot.forEach((doc) => {
+    records.push({
+      id: doc.id,
+      ...doc.data()
+    });
+  });
+
+  return records;
+}
