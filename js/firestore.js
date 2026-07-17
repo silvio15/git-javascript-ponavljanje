@@ -28,3 +28,13 @@ async function getRecords() {
 
   return records;
 }
+
+//Ažuriranje zapisa
+async function updateRecord(id, data) {
+  await db.collection("records").doc(id).update(data);
+}
+
+//Brisanje zapisa
+async function deleteRecord(id) {
+  await db.collection("records").doc(id).delete();
+}

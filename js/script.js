@@ -1,6 +1,16 @@
 const form = document.getElementById("recordForm");
 const recordsContainer = document.getElementById("records");
+const inptTitle = document.getElementById("title");
+const inptCategory = document.getElementById("category");
+const inptDate = document.getElementById("date");
+const inptStatus = document.getElementById("status");
+const inptDescription = document.getElementById("description");
+const searchInput = document.getElementById("search");
+const filterSelect = document.getElementById("filter");
+
 let records = [];
+let editMode = false;
+let currentId = null;
 
 async function loadRecords() {
   records = await getRecords();
@@ -28,23 +38,91 @@ function displayRecords(records) {
   });
 }
 
+recordsContainer.addEventListener("click", async (event) => {
+  if (event.target.classList.contains("edit")) {
+    const id = event.target.dataset.id;
+    const record = getRecordById(id);
+    //popunjavanje elemenata za unos u formi
+    inptTitle.value = record.title;
+    inptCategory.value = record.category;
+    inptDate.value = record.date;
+    inptStatus.value = record.status;
+    inptDescription.value = record.description;
+
+    editMode = true;
+    currentId = id;
+
+    document.getElementsByClassName("btn-primary")[0].textContent =
+      "Ažuriraj zapis";
+  } else if (event.target.classList.contains("delete")) {
+    if (confirm("Želite li obrisati zapis?")) {
+      const id = event.target.dataset.id;
+      await deleteRecord(id);
+
+      loadRecords();
+    }
+  }
+});
+
+function getRecordById(id) {
+  return records.find((record) => {
+    return record.id === id;
+  });
+}
+
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const newRecord = {
-    title: document.getElementById("title").value,
-    category: document.getElementById("category").value,
-    date: document.getElementById("date").value,
-    status: document.getElementById("status").value,
-    description: document.getElementById("description").value
+    title: inptTitle.value,
+    category: inptCategory.value,
+    date: inptDate.value,
+    status: inptStatus.value,
+    description: inptDescription.value
   };
 
-  try {
-    await addRecord(newRecord, "records");
-    console.log("Zapis uspješno spremljen");
-  } catch (error) {
-    console.error(error);
+  if (editMode) {
+    await updateRecord(currentId, newRecord);
+    editMode = false;
+    currentId = null;
+
+    document.getElementsByClassName("btn-primary")[0].textContent =
+      "Spremi zapis";
+  } else {
+    try {
+      await addRecord(newRecord, "records");
+      console.log("Zapis uspješno spremljen");
+    } catch (error) {
+      console.error(error);
+    }
   }
+
+  form.reset();
+  loadRecords();
+});
+
+searchInput.addEventListener("input", () => {
+  const value = searchInput.value.toLowerCase();
+  const filteredRecords = records.filter((record) => {
+    return record.title.toLowerCase().includes(value);
+  });
+
+  displayRecords(filteredRecords);
+});
+
+filterSelect.addEventListener("change", (event) => {
+  const category = event.target.value;
+
+  if (category === "Sve") {
+    displayRecords(records);
+    return;
+  }
+
+  const filteredRecords = records.filter((record) => {
+    return record.category === category;
+  });
+
+  displayRecords(filteredRecords);
 });
 
 loadRecords();
