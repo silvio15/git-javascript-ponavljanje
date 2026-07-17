@@ -12,6 +12,7 @@ function displayRecords(records) {
 
   records.forEach((record) => {
     const card = document.createElement("article");
+    card.classList.add("card");
     card.innerHTML = `
       <h3>${record.title}</h3>
       <p>${record.category}</p>
