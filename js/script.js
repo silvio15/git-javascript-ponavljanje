@@ -7,6 +7,7 @@ const inptStatus = document.getElementById("status");
 const inptDescription = document.getElementById("description");
 const searchInput = document.getElementById("search");
 const filterSelect = document.getElementById("filter");
+const toast = document.getElementById("toast");
 
 let records = [];
 let editMode = false;
@@ -58,7 +59,7 @@ recordsContainer.addEventListener("click", async (event) => {
     if (confirm("Želite li obrisati zapis?")) {
       const id = event.target.dataset.id;
       await deleteRecord(id);
-
+      showToast("Zapis uspješno obrisan", "warning");
       loadRecords();
     }
   }
@@ -83,6 +84,7 @@ form.addEventListener("submit", async (event) => {
 
   if (editMode) {
     await updateRecord(currentId, newRecord);
+    showToast("Zapis uspješno ažuriran");
     editMode = false;
     currentId = null;
 
@@ -91,9 +93,9 @@ form.addEventListener("submit", async (event) => {
   } else {
     try {
       await addRecord(newRecord, "records");
-      console.log("Zapis uspješno spremljen");
+      showToast("Zapis uspješno spremljen");
     } catch (error) {
-      console.error(error);
+      showToast("Greška kod spremanja", "error");
     }
   }
 
@@ -124,5 +126,20 @@ filterSelect.addEventListener("change", (event) => {
 
   displayRecords(filteredRecords);
 });
+
+function showToast(message, type = "success") {
+  toast.textContent = message;
+
+  toast.className = "";
+  if (type !== "success") {
+    toast.classList.add(type);
+  }
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000);
+}
 
 loadRecords();

@@ -20,10 +20,14 @@ async function getRecords() {
   let records = [];
 
   snapshot.forEach((doc) => {
-    records.push({
-      id: doc.id,
-      ...doc.data()
-    });
+    try {
+      records.push({
+        id: doc.id,
+        ...doc.data()
+      });
+    } catch (error) {
+      showToast("Greška u dohvaćanju", "error");
+    }
   });
 
   return records;

@@ -155,3 +155,33 @@ textarea {
     flex-direction: column;
   }
 }
+
+/* TOAST */
+#toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  background-color: #16a34a;
+  color: var(--card);
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: 0.3s;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+#toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#toast.error {
+  background: var(--danger);
+}
+
+#toast.warning {
+  background: #f59e0b;
+}
